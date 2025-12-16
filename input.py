@@ -1,22 +1,27 @@
 import gspread
 import pandas as pd
+import os
+import json
 from google.oauth2.service_account import Credentials
 
 # ==================================================
-# 1. KẾT NỐI GOOGLE SHEETS
+# 1. KẾT NỐI GOOGLE SHEETS (GITHUB ACTIONS OK)
 # ==================================================
 def connect_sheet(sheet_id):
     scopes = ["https://www.googleapis.com/auth/spreadsheets"]
-    creds = Credentials.from_service_account_file(
-        "service.json",
+
+    creds_dict = json.loads(os.environ["GOOGLE_CREDENTIALS"])
+    creds = Credentials.from_service_account_info(
+        creds_dict,
         scopes=scopes
     )
+
     client = gspread.authorize(creds)
     return client.open_by_key(sheet_id)
 
 
 # ==================================================
-# 2. ĐỌC DỮ LIỆU (KHÔNG MẤT DẤU ,)
+# 2. ĐỌC DỮ LIỆU
 # ==================================================
 def read_data(spreadsheet, sheet_name="Data"):
     ws = spreadsheet.worksheet(sheet_name)
@@ -33,7 +38,6 @@ def clean_data(df):
     df = df.copy()
     df.columns = df.columns.str.strip()
 
-    # Chuẩn hóa tên cột
     df = df.rename(columns={
         "MSV": "Mã sinh viên",
         "Chuyên cần": "Điểm danh",
@@ -42,13 +46,9 @@ def clean_data(df):
         "Điểm cuối kỳ": "Cuối kỳ"
     })
 
-    # Xóa dòng không có mã SV
     df = df[df["Mã sinh viên"].astype(str).str.strip() != ""]
-
-    # Xóa trùng sinh viên
     df = df.drop_duplicates(subset=["Mã sinh viên"], keep="first")
 
-    # Xử lý cột Nhóm (merge cell → fill xuống)
     if "Nhóm" in df.columns:
         df["Nhóm"] = (
             df["Nhóm"]
@@ -59,7 +59,6 @@ def clean_data(df):
         )
         df["Nhóm"] = pd.to_numeric(df["Nhóm"], errors="coerce")
 
-    # Chuẩn hóa cột điểm
     score_cols = ["Điểm danh", "Quá trình", "Giữa kỳ", "Cuối kỳ"]
     for col in score_cols:
         df[col] = (
@@ -73,10 +72,9 @@ def clean_data(df):
 
 
 # ==================================================
-# 4. TÍNH ĐIỂM TỔNG KẾT (LÀM TRÒN 1 CHỮ SỐ)
+# 4. TÍNH ĐIỂM TỔNG KẾT
 # ==================================================
 def calculate_total(df):
-    df = df.copy()
     df["Tổng kết"] = (
         0.1 * df["Điểm danh"]
         + 0.3 * df["Quá trình"]
@@ -87,25 +85,20 @@ def calculate_total(df):
 
 
 # ==================================================
-# 5. XẾP HẠNG CÁ NHÂN – TOÀN LỚP
+# 5. XẾP HẠNG CÁ NHÂN (1 2 2 4 4 6)
 # ==================================================
 def ranking_individual(df):
-    rank = (
-        df.sort_values("Tổng kết", ascending=False)
-        .reset_index(drop=True)
-    )
-
-    # COMPETITION RANKING: 1 2 2 4 4 6
+    rank = df.sort_values("Tổng kết", ascending=False).reset_index(drop=True)
     rank["Xếp hạng"] = (
         rank["Tổng kết"]
         .rank(method="min", ascending=False)
         .astype(int)
     )
-
     return rank
 
+
 # ==================================================
-# 6. XẾP HẠNG NHÓM (DÙNG NHÓM CÓ SẴN)
+# 6. XẾP HẠNG NHÓM
 # ==================================================
 def ranking_group(df):
     group_df = (
@@ -125,16 +118,14 @@ def ranking_group(df):
 
 
 # ==================================================
-# 7. GHI DATAFRAME RA GOOGLE SHEETS
+# 7. GHI GOOGLE SHEETS
 # ==================================================
 def write_sheet(spreadsheet, sheet_name, df):
     try:
         ws = spreadsheet.worksheet(sheet_name)
         ws.clear()
     except:
-        ws = spreadsheet.add_worksheet(
-            title=sheet_name, rows=1000, cols=30
-        )
+        ws = spreadsheet.add_worksheet(title=sheet_name, rows=1000, cols=30)
 
     ws.update(
         [df.columns.tolist()] + df.values.tolist(),
@@ -150,29 +141,24 @@ def main():
 
     spreadsheet = connect_sheet(SHEET_ID)
 
-    # 1. Đọc & xử lý dữ liệu
     df = read_data(spreadsheet, "Data")
     df = clean_data(df)
     df = calculate_total(df)
 
-    # 2. Xếp hạng TOÀN LỚP
     rank_ind = ranking_individual(df)
-
-    # 3. Ghi sheet NHÓM
     rank_group = ranking_group(rank_ind)
+
     write_sheet(spreadsheet, "Ranking_Group", rank_group)
 
-    # 4. Ghi sheet CÁ NHÂN – SẮP XẾP THEO THỨ TỰ XẾP HẠNG
     final_output = (
         rank_ind
         .sort_values(["Xếp hạng", "Tổng kết"], ascending=[True, False])
         .reset_index(drop=True)
-        .fillna("")
     )
 
     write_sheet(spreadsheet, "Ranking_Individual", final_output)
 
-    print("✅ HOÀN THÀNH – ĐÃ SẮP XẾP THEO XẾP HẠNG TOÀN LỚP")
+    print("✅ GITHUB ACTIONS – CẬP NHẬT GOOGLE SHEETS THÀNH CÔNG")
 
 
 if __name__ == "__main__":
