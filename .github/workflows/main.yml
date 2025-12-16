@@ -1,29 +1,29 @@
-name: Auto Update Google Sheets
+name: Auto update Google Sheet
 
 on:
   schedule:
-    - cron: '0 1 * * *'   # 08:00 sáng giờ Việt Nam (UTC+7)
+    - cron: "0 0 * * *"   # 7h sáng VN
   workflow_dispatch:
 
 jobs:
-  run-python:
+  run:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Setup Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.11'
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
 
-    - name: Install dependencies
-      run: |
-        pip install -r requirements.txt
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
 
-    - name: Run Python script
-      env:
-        GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
-      run: |
-        python input.py
+      - name: Run python script
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+        run: |
+          python input.py
