@@ -1,29 +1,35 @@
-name: Auto update Google Sheet
+name: Run all Python scripts every day at 8 AM
 
 on:
   schedule:
-    - cron: "0 0 * * *"   # 7h sáng VN
+    # 8:00 sáng giờ Việt Nam (UTC+7) = 1:00 UTC
+    - cron: "0 1 * * *"
   workflow_dispatch:
 
 jobs:
-  run:
+  run-all-python:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Python
+      - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: "3.10"
 
       - name: Install dependencies
         run: |
-          pip install -r requirements.txt
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then
+            pip install -r requirements.txt
+          fi
 
-      - name: Run python script
-        env:
-          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+      - name: Run all Python files
         run: |
-          python input.py
+          echo "Running all Python scripts..."
+          for file in *.py; do
+            echo "Running $file"
+            python "$file"
+          done
