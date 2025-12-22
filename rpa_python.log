@@ -1,0 +1,65 @@
+
+START - automation started - Mon Dec 22 2025 12:48:50 GMT+0700 (SE Asia Standard Time)
+
+LIVE MODE - type done to quit
+ [RPA][STARTED]
+[RPA][0] - listening for inputs
+[RPA][1] - https://drive.google.com/drive/u/0/folders/1rZaTbI573-FgPzrbmEFrAq2lG0QgA8bs
+[RPA][1] - listening for inputs
+[RPA][2] - keyboard [esc]
+[RPA][2] - listening for inputs
+[RPA][3] - exist_result = exist('//*[@aria-label="Tìm trong Drive" or @aria-label="Search in Drive"]').toString()
+[RPA][3] - listening for inputs
+[RPA][4] - dump exist_result to rpa_python.txt
+[RPA][4] - listening for inputs
+[RPA][5] - type //*[@aria-label="Tìm trong Drive" or @aria-label="Search in Drive"] as Nhom1_Ca1_Cum1
+[RPA][5] - listening for inputs
+[RPA][6] - exist_result = exist('//div[@role="main"]//*[@aria-label and contains(translate(@aria-label,"ABCDEFGHIJKLMNOPQRSTUVWXYZ","abcdefghijklmnopqrstuvwxyz"), "nhom1_ca1_cum1")]').toString()
+[RPA][6] - listening for inputs
+[RPA][7] - dump exist_result to rpa_python.txt
+[RPA][7] - listening for inputs
+[RPA][8] - keyboard [esc]
+[RPA][8] - listening for inputs
+[RPA][9] - exist_result = exist('//*[@aria-label="Tìm trong Drive" or @aria-label="Search in Drive"]').toString()
+[RPA][9] - listening for inputs
+[RPA][10] - dump exist_result to rpa_python.txt
+[RPA][10] - listening for inputs
+[RPA][11] - type //*[@aria-label="Tìm trong Drive" or @aria-label="Search in Drive"] as Nhom2_Ca1_Cum1
+[RPA][11] - listening for inputs
+[RPA][12] - exist_result = exist('//div[@role="main"]//*[@aria-label and contains(translate(@aria-label,"ABCDEFGHIJKLMNOPQRSTUVWXYZ","abcdefghijklmnopqrstuvwxyz"), "nhom2_ca1_cum1")]').toString()
+[RPA][12] - listening for inputs
+[RPA][13] - dump exist_result to rpa_python.txt
+[RPA][13] - listening for inputs
+[RPA][14] - keyboard [esc]
+[RPA][14] - listening for inputs
+[RPA][15] - exist_result = exist('//*[@aria-label="Tìm trong Drive" or @aria-label="Search in Drive"]').toString()
+[RPA][15] - listening for inputs
+[RPA][16] - dump exist_result to rpa_python.txt
+[RPA][16] - listening for inputs
+[RPA][17] - type //*[@aria-label="Tìm trong Drive" or @aria-label="Search in Drive"] as Nhom3_Ca1_Cum1
+[RPA][17] - listening for inputs
+[RPA][18] - exist_result = exist('//div[@role="main"]//*[@aria-label and contains(translate(@aria-label,"ABCDEFGHIJKLMNOPQRSTUVWXYZ","abcdefghijklmnopqrstuvwxyz"), "nhom3_ca1_cum1")]').toString()
+[RPA][18] - listening for inputs
+[RPA][19] - dump exist_result to rpa_python.txt
+[RPA][19] - listening for inputs
+[RPA][20] - keyboard [esc]
+[RPA][20] - listening for inputs
+[RPA][21] - exist_result = exist('//*[@aria-label="Tìm trong Drive" or @aria-label="Search in Drive"]').toString()
+[RPA][21] - listening for inputs
+[RPA][22] - dump exist_result to rpa_python.txt
+[RPA][22] - listening for inputs
+[RPA][23] - type //*[@aria-label="Tìm trong Drive" or @aria-label="Search in Drive"] as Nhom4_Ca1_Cum1
+[RPA][23] - listening for inputs
+[RPA][24] - exist_result = exist('//div[@role="main"]//*[@aria-label and contains(translate(@aria-label,"ABCDEFGHIJKLMNOPQRSTUVWXYZ","abcdefghijklmnopqrstuvwxyz"), "nhom4_ca1_cum1")]').toString()
+[RPA][24] - listening for inputs
+[RPA][25] - dump exist_result to rpa_python.txt
+[RPA][25] - listening for inputs
+[RPA][26] - keyboard [esc]
+[RPA][26] - listening for inputs
+[RPA][27] - exist_result = exist('//*[@aria-label="Tìm trong Drive" or @aria-label="Search in Drive"]').toString()
+[RPA][27] - listening for inputs
+[RPA][28] - dump exist_result to rpa_python.txt
+[RPA][28] - listening for inputs
+[RPA][29] - type //*[@aria-label="Tìm trong Drive" or @aria-label="Search in Drive"] as Nhom5_Ca1_Cum2
+[RPA][29] - listening for inputs
+[RPA][30] - exist_result = exist('//div[@role="main"]//*[@aria-label and contains(translate(@aria-label,"ABCDEFGHIJKLMNOPQRSTUVWXYZ","abcdefghijklmnopqrstuvwxyz"), "nhom5_ca1_cum2")]').toString()
